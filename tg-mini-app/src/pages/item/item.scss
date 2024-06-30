@@ -1,0 +1,91 @@
+.loader-container {
+    height: calc(100vh - 35.6px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    /* HTML: <div class="loader"></div> */
+        .loader {
+        width: fit-content;
+        font-weight: bold;
+        font-family: monospace;
+        font-size: 30px;
+        background:linear-gradient(90deg,var(--text-color) 50%,#0000 0) right/200% 100%;
+        animation: l21 2s infinite linear;
+        }
+        .loader::before {
+        content :"Загружаем...";
+        color: #0000;
+        padding: 0 10px;
+        background: inherit;
+        background-image: linear-gradient(90deg, var(--background-color) 50%,var(--text-color) 0);
+        -webkit-background-clip:text;
+                background-clip:text;
+        }
+
+        @keyframes l21{
+        100%{background-position: left}
+        }
+}
+
+.item-detail {
+    width: 98%;
+    margin: 0 auto;
+    color: var(--text-color);
+
+    .item-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 15px 0;
+        .item-image {
+            width: 80%;
+            object-fit: contain;
+            border-radius: 20px;
+        }
+    }
+
+    .price {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: 600;
+        padding: 5%;
+        border-bottom: 1px solid rgb(233, 233, 233);
+
+        .new-price {
+            font-size: 20px;
+            text-decoration: none;
+            color: var(--text-color);
+        }
+
+        .old-price {
+            font-size: 18px;
+            color: grey;
+            text-decoration: line-through;
+        }
+    }
+
+    .item-info {
+        margin: 5px 0;
+        font-size: 20px;
+        text-align: left;
+        font-weight: 550;
+        color: var(--text-color);
+        padding: 5%;
+        border-bottom: 1px solid rgb(233, 233, 233);
+    }
+    .sizes-name {
+        font-size: 20px;
+        padding: 5%;
+        font-weight: 550;
+    }
+    .sizes {
+        padding: 0 5% 5%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        font-size: 18px;
+        gap: 5px;
+    }
+}

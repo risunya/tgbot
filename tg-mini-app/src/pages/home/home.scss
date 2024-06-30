@@ -1,0 +1,92 @@
+.content {
+    width: 98%;
+    margin: 0 auto;
+    color: var(--text-color);
+    .loader-container {
+        height: calc(100vh - 35.6px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0 auto;
+        /* HTML: <div class="loader"></div> */
+            .loader {
+            width: fit-content;
+            font-weight: bold;
+            font-family: monospace;
+            font-size: 30px;
+            background:linear-gradient(90deg,var(--text-color) 50%,#0000 0) right/200% 100%;
+            animation: l21 2s infinite linear;
+            }
+            .loader::before {
+            content :"Загружаем...";
+            color: #0000;
+            padding: 0 10px;
+            background: inherit;
+            background-image: linear-gradient(90deg, var(--background-color) 50%,var(--text-color) 0);
+            -webkit-background-clip:text;
+                    background-clip:text;
+            }
+
+            @keyframes l21{
+            100%{background-position: left}
+            }
+    }
+    .name {
+        font-size: 12px;
+    }
+    .item-list {
+        display: grid;
+        grid-template-columns: auto auto;
+        gap: 5px;
+        justify-content: space-between;
+        .item {
+            background-color: rgba(229, 226, 226, 0.05);
+            border-radius: 25px;
+            border: 1px solid var(--light-background-color);
+            display: flex;
+            flex-direction: column;
+            padding: 3% 5%;
+            width: 90%;
+            .item-container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                
+               .item-image {
+                width: 100%;
+                object-fit: contain;
+                border-radius: 20px;
+               }
+            }
+            .item-info {
+                margin: 5px 0;
+                font-size: 13px;
+                text-align:left;
+                font-weight: 450;
+                color: var(--text-color);
+            }
+            .price {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                font-weight: 600;
+                .new-price {
+                    font-size: 12px;
+                    text-decoration: none;
+                    color: var(--text-color);
+                }
+                .old-price {
+                    font-size: 10px;
+                    color: grey;
+                    text-decoration: line-through;
+                }
+            }
+        }
+        
+        .sizes {
+            display: grid;
+            grid-template-columns: auto auto auto;
+            font-size: 8px;
+        }
+    }
+}

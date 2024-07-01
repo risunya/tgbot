@@ -11,9 +11,7 @@ export const Header = () => {
             </Link>
             <div className='helpers'>
                 <ThemeButton/>
-                <Link to='/cart'>
-                    <CartImg/>
-                </Link>
+                <CartImg/>
             </div>
         </div>
     )

@@ -21,7 +21,9 @@ export const Home = () => {
             } catch (error) {
                 console.error('Ошибка:', error);
             } finally {
-                setLoading(false);
+                setTimeout(() => {
+                    setLoading(false);
+                  }, 1000);
             }
         };
 
@@ -32,31 +34,31 @@ export const Home = () => {
 
     return (
         <div className='content'>
+             {data && (
+                            <>
+                                <Search />
+                                <div className='item-list'>
+                                    {newData.map((item: any, index: number) =>
+                                        <Link to={`/${item[0]}`} key={index} className='item'>
+                                            <div className='item-container'>
+                                                <img className='item-image' src={item[1]} alt={`Изображение товара ${item[0]}`} />
+                                            </div>
+                                            <div className='price'>
+                                                <div className='new-price'>{item[23]}₽</div>
+                                                <div className='old-price'>{Math.round(item[23] * 1.1)}₽</div>
+                                            </div>
+                                            <div className='item-info'>{item[0]} ({item[2]})</div>
+                                        </Link>
+                                    )}
+                                </div>
+                            </>
+                         )
+                }
             {loading ? (
                 <div className='loader-container'>
                     <div className="loader"></div>
                 </div>
-            ) : (
-                data && (
-                    <>
-                        <Search />
-                        <div className='item-list'>
-                            {newData.map((item: any, index: number) =>
-                                <Link to={`/${item[0]}`} key={index} className='item'>
-                                    <div className='item-container'>
-                                        <img className='item-image' src={item[1]} alt={`Изображение товара ${item[0]}`} />
-                                    </div>
-                                    <div className='price'>
-                                        <div className='new-price'>{item[23]}₽</div>
-                                        <div className='old-price'>{Math.round(item[23] * 1.1)}₽</div>
-                                    </div>
-                                    <div className='item-info'>{item[0]} ({item[2]})</div>
-                                </Link>
-                            )}
-                        </div>
-                    </>
-                )
-            )}
+            ) : null }
         </div>
     );
 };

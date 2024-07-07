@@ -3,10 +3,12 @@ import { Link } from 'react-router-dom';
 import './home.scss';
 import { Search } from '../../components/search/Search';
 import { Note } from '../../components/note/Note';
+import Skeleton from '@mui/material/Skeleton';
 
 export const Home = () => {
     const [data, setData] = useState<any>(null);
     const [loading, setLoading] = useState(true);
+    const [imageLoading, setImageLoading] = useState(true);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -18,6 +20,7 @@ export const Home = () => {
                     throw new Error('Ошибка при получении данных: ' + response.status);
                 }
                 const jsonData = await response.json();
+                console.log('Полученные данные:', jsonData); // Добавлено отладочное сообщение
                 setData(jsonData.result);
             } catch (error) {
                 console.error('Ошибка:', error);
@@ -35,15 +38,32 @@ export const Home = () => {
 
     return (
         <div className='content'>
-            {data && (
-                <>
-                    <Note />
-                    <Search />
+            <>
+                <Note />
+                <Search data={newData}/>
+                {data && (
                     <div className='item-list'>
-                        {newData.map((item: any, index: number) =>
-                            <Link to={`/shoes/${item[25]}`} key={index} className='item'>
+                        {newData.map((item: any, index: number) => (
+                            <Link to={`/shoes/${index + 1}`} key={index} className='item'>
                                 <div className='item-container'>
-                                    <img className='item-image' src={item[1]} alt={`Изображение товара ${item[0]}`} />
+                                    {imageLoading ? (
+                                        <Skeleton
+                                            sx={{ bgcolor: 'var(--background-color)' }}
+                                            variant="rectangular"
+                                            animation="wave"
+                                            width={169.9}
+                                            height={169.9}
+                                        />
+                                    ) : null}
+                                    <img
+                                        className='item-image'
+                                        src={item[1]}
+                                        alt={`Изображение товара ${item[0]}`}
+                                        width={169.9}
+                                        height={169.9}
+                                        onLoad={() => setImageLoading(false)}
+                                        style={{ display: imageLoading ? 'none' : 'block' }}
+                                    />
                                 </div>
                                 <div className='price'>
                                     <div className='new-price'>{item[23]}₽</div>
@@ -51,10 +71,10 @@ export const Home = () => {
                                 </div>
                                 <div className='item-info'>{item[0]} ({item[2]})</div>
                             </Link>
-                        )}
+                        ))}
                     </div>
-                </>
-            )}
+                )}
+            </>
             {loading ? (
                 <div className='loader-container'>
                     <div className="loader"></div>

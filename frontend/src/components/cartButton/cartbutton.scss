@@ -1,0 +1,15 @@
+.cart-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    border-radius: 9999px;
+}
+
+.helper-button {
+    color: var(--text-color);
+    transition: .3s;
+        &:active {
+            transform: scale(.95);
+         }
+}

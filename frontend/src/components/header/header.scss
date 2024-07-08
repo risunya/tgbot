@@ -5,7 +5,8 @@
     text-decoration: none;
     width: 90%;
     margin: 0 auto;
-    padding: 5px 0;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--light-background-color);
     .header-name {
         color: var(--text-color);
         text-decoration: none;

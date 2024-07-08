@@ -1,0 +1,69 @@
+.acordeon {
+    border-bottom: 1px solid var(--light-background-color);
+    width: 92%;
+    margin: 1rem auto;
+    padding-bottom: 1rem;
+    .note-wrapper {
+        border-radius: 2rem;
+        background-color: var(--warning-color);
+        color: var(--warning-text-color);
+        transition: 0.4s;
+        .note {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 3rem;
+            padding: 0 0.2rem;
+            .info-wrapper {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 0.5rem;
+                padding: 0.5rem 1rem;
+            }
+            .note-text {
+                height: 3.6rem;
+                font-size: 1.4rem;   
+                font-weight: 500;
+                display: flex;
+                justify-content: center;
+                align-items: center;        
+            }
+            .arrow-wrapper {
+                padding: 0.5rem 1rem;
+                .plus, .minus {
+                    border-radius: 99999px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    font-size: 1rem;
+                    transition: .3s;
+                    &:hover {
+                        background-color: var(--light-background-color);
+                    }
+                    &:active {
+                        transform: scale(.95);
+                    }
+                }
+            }
+        }
+        .panel {
+            font-size: 1.4rem;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            overflow: hidden;
+            max-height: 0;
+            opacity: 0;
+            padding: 0 1.5rem;
+            transition: max-height 600ms ease, opacity 600ms ease;
+        }
+        .panel.active {
+            display: block;
+            max-height: 1000px; /* или любое другое значение, достаточное для вашего содержимого */
+            opacity: 1;
+            transition: max-height 600ms ease, opacity 600ms ease;
+            padding: 0.2rem 1.5rem 1rem;
+        }
+    }
+}

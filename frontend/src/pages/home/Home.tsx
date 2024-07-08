@@ -2,13 +2,12 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './home.scss';
 import { Search } from '../../components/search/Search';
-import { Note } from '../../components/note/Note';
-import Skeleton from '@mui/material/Skeleton';
+import { Acordeon } from '../../components/note/Acordeon';
 
 export const Home = () => {
     const [data, setData] = useState<any>(null);
     const [loading, setLoading] = useState(true);
-    const [imageLoading, setImageLoading] = useState(true);
+    const [imagesLoaded, setImagesLoaded] = useState<boolean[]>([]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -22,12 +21,13 @@ export const Home = () => {
                 const jsonData = await response.json();
                 console.log('Полученные данные:', jsonData); // Добавлено отладочное сообщение
                 setData(jsonData.result);
+                setImagesLoaded(new Array(jsonData.result.length).fill(false));
             } catch (error) {
                 console.error('Ошибка:', error);
             } finally {
                 setTimeout(() => {
                     setLoading(false);
-                }, 1000);
+                }, 0);
             }
         };
 
@@ -36,34 +36,44 @@ export const Home = () => {
 
     const newData = data && Array.isArray(data) ? data.slice(1) : [];
 
+    const preloadImage = (src : any, index : any) => {
+        const img = new Image();
+        img.src = src;
+        img.onload = () => {
+            setImagesLoaded((prev) => {
+                const newLoaded = [...prev];
+                newLoaded[index] = true;
+                return newLoaded;
+            });
+        };
+    };
+
+    useEffect(() => {
+        if (newData.length > 0) {
+            newData.forEach((item, index) => {
+                preloadImage(item[1], index);
+            });
+        }
+    }, [newData]);
+
     return (
         <div className='content'>
             <>
-                <Note />
-                <Search data={newData}/>
+                <Acordeon />
+                <Search />
                 {data && (
                     <div className='item-list'>
                         {newData.map((item: any, index: number) => (
                             <Link to={`/shoes/${index + 1}`} key={index} className='item'>
                                 <div className='item-container'>
-                                    {imageLoading ? (
-                                        <Skeleton
-                                            sx={{ bgcolor: 'var(--background-color)' }}
-                                            variant="rectangular"
-                                            animation="wave"
-                                            width={169.9}
-                                            height={169.9}
+                                    {!imagesLoaded[index] && <div className='skeleton-image' />}
+                                    {imagesLoaded[index] && (
+                                        <img
+                                            className='item-image'
+                                            src={item[1]}
+                                            alt={`Изображение товара ${item[0]}`}
                                         />
-                                    ) : null}
-                                    <img
-                                        className='item-image'
-                                        src={item[1]}
-                                        alt={`Изображение товара ${item[0]}`}
-                                        width={169.9}
-                                        height={169.9}
-                                        onLoad={() => setImageLoading(false)}
-                                        style={{ display: imageLoading ? 'none' : 'block' }}
-                                    />
+                                    )}
                                 </div>
                                 <div className='price'>
                                     <div className='new-price'>{item[23]}₽</div>

@@ -30,9 +30,7 @@ html, body {margin: 0; height: 100%;}
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-
-  color: rgba(255, 255, 255, 0.87);
-
+  font-size: 10px;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -41,7 +39,7 @@ html, body {margin: 0; height: 100%;}
 
 
 html {
-  transition: background-color 100ms linear;
+  transition: background-color 300ms ;
   background-color: var(--background-color);
   color: var(--text-color);
   transition: .3s;

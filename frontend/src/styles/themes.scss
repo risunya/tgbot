@@ -4,8 +4,10 @@ html[data-theme='light'] {
     --reverse-text-color:white;
     --background-color: white;
     --reverse-background-color: black;
-    --light-background-color: #23272f0d;
+    --light-background-color: #23272f10;
     --dark-background-color: #afa9a90d;
+    --warning-color: #f9f1e4;
+    --warning-text-color:  #e27e2cf6;
 }
 
 html[data-theme='dark'] {
@@ -14,8 +16,10 @@ html[data-theme='dark'] {
     --reverse-text-color:black;
     --background-color: #23272f;
     --reverse-background-color: white;
-    --light-background-color: #afa9a90d;
+    --light-background-color: #afa9a921;
     --dark-background-color: #23272f0d;
+    --warning-color: #4f4638;
+    --warning-text-color:  #f0871e;
 }
 
 

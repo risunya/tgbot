@@ -29,12 +29,11 @@
 }
 
 .item-detail {
-    width: 98%;
+    width: 100%;
     margin: 0 auto;
     color: var(--text-color);
     .article-container {
         display: flex;
-        margin-bottom: 50px;
         padding: 5%;
         flex-direction: column;
         gap: 10px;
@@ -46,6 +45,7 @@
         .article {
             color: var(--text-color);
             font-weight: 350;
+            font-size: 1.5rem;
         }
     }
     }
@@ -58,33 +58,6 @@
             width: 80%;
             object-fit: contain;
             border-radius: 20px;
-        }
-    }
-    .price-container {
-        width: 98%;
-        position: fixed;
-        bottom: 0;
-        height: 10vh;
-        margin: 0 auto;
-        background-color: var(--background-color);
-        z-index: 5;
-        .price {
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            font-weight: 600;
-            padding: 5%;
-            gap: 5px;
-            .new-price {
-                font-size: 20px;
-                text-decoration: none;
-                color: var(--text-color);
-            }
-            .old-price {
-                font-size: 18px;
-                color: grey;
-                text-decoration: line-through;
-            }
         }
     }
     .item-info {
@@ -119,6 +92,36 @@
                 align-items: center;
                 box-shadow: 0px 0px 2px 0px var(--second-text-color);
                 border-radius: 99999px;
+            }
+        }
+    }
+
+    .price-container {
+        width: 100%;
+        position: sticky;
+        bottom: 0;
+        height: 6rem;
+        margin: 0 auto;
+        background-color: var(--background-color);
+        border-top: 1px solid var(--light-background-color);
+        transition: .3s;
+        z-index: 5;
+        .price {
+            display: flex;
+            justify-content: flex-start;
+            align-items: end;
+            font-weight: 600;
+            padding: 2rem 5%;
+            gap: 1rem;
+            .new-price {
+                font-size: 2rem;
+                text-decoration: none;
+                color: var(--text-color);
+            }
+            .old-price {
+                font-size: 1.8rem;
+                color: grey;
+                text-decoration: line-through;
             }
         }
     }

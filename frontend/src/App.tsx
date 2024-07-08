@@ -1,5 +1,4 @@
 import { Routes, Route } from 'react-router-dom'
-import { Footer } from './components/footer/Footer'
 import { Header } from './components/header/Header'
 import { Cart } from './pages/cart/Cart'
 import { Home } from './pages/home/Home'
@@ -15,7 +14,6 @@ function App() {
               <Route path='/cart' element={<Cart/>}/>
               <Route path='/shoes/:itemnumber' element={<Item/>}/>
             </Routes>
-      <Footer/>
     </SkeletonTheme>
   )
 }

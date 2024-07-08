@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import './item.scss';
+import './itempage.scss';
 
-const Item = () => {
+export const ItemPage = () => {
     const { itemnumber } = useParams();
     const [itemData, setItemData] = useState<any>(null);
     const [loading, setLoading] = useState(true);
@@ -72,5 +72,3 @@ const Item = () => {
         </>
     );
 };
-
-export default Item;

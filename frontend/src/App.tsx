@@ -2,7 +2,7 @@ import { Routes, Route } from 'react-router-dom'
 import { Header } from './components/header/Header'
 import { Cart } from './pages/cart/Cart'
 import { Home } from './pages/home/Home'
-import Item from './pages/item/Item'
+import { ItemPage } from './pages/item-page/ItemPage'
 import { SkeletonTheme } from 'react-loading-skeleton'
 
 function App() {
@@ -12,7 +12,7 @@ function App() {
             <Routes>
               <Route path='/' element={<Home/>}/>
               <Route path='/cart' element={<Cart/>}/>
-              <Route path='/shoes/:itemnumber' element={<Item/>}/>
+              <Route path='/shoes/:itemnumber' element={<ItemPage/>}/>
             </Routes>
     </SkeletonTheme>
   )

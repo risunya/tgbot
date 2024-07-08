@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
-import './acordeon.scss';
+import './accordion.scss';
 
-export const Acordeon = () => {
+export const Accordion = () => {
     const [isOpened, setOpen] = useState(false);
     const panelRef = useRef<HTMLDivElement>(null);
     const [panelHeight, setPanelHeight] = useState(0);
@@ -13,7 +13,7 @@ export const Acordeon = () => {
     }, [isOpened]);
 
     return (
-        <div className="acordeon">
+        <div className="accordion">
             <div className="note-wrapper">
                 <div className="note">
                     <div className="info-wrapper">
@@ -22,10 +22,10 @@ export const Acordeon = () => {
                     </div>
                     <div className="arrow-wrapper">
                         {!isOpened ? <div className='plus' onClick={() => setOpen(true)}>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                         </div> :
                         <div className='minus' onClick={() => setOpen(false)}>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="feather feather-minus"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-minus"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                         </div>}
                     </div>
                 </div>

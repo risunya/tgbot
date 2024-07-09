@@ -1,7 +1,10 @@
+// ItemList.tsx
 import './itemlist.scss';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Loader } from '../../components/loader/Loader';
+import { Search } from '../../components/search/Search';
+import { Filter } from '../filter/Filter';
 
 export const ItemList = () => {
     const [data, setData] = useState<any>(null);
@@ -11,7 +14,7 @@ export const ItemList = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const scriptUrl = 'https://script.googleusercontent.com/macros/echo?user_content_key=8EH7iMJwuoCnDaRj2usaAWrADH-M44jxBWVwLkDdrw1-lJLYQ8GvrUGq-sL_fjLQR4k5PfHplgN9kRfAAaq0a2D_Y1a4RHMIm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnOPj8I7q2499TIq2ooh3bK5bjYY7TU9X0FOciTIu7e1TchrTqRqfUo30z0wPFBLf-KHEkTsxv2bcir5Bk3Oafa95bMDoXG0mGA&lib=MXR79vg1ZLOpNmISJxcAQR38eJs5q9m5W';
+            const scriptUrl = 'https://script.googleusercontent.com/macros/echo?user_content_key=d90MFXtmuW3izfepKfq7ZfiPRyCxr2vldRQYJ27qcoUZaMHQhwQViqcnhOVO1HlAFjB4I1vwrXZ5QzkeLCGzV8IQqgdBXFUWm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnOxQImybUPuS6gyOh04-ChOeoLqomWZiVh4nbMH2jGLztWY58bMJ5DdljgQhm1tYyqp3CBAJDDp_qPpfSoylfD5JQhe5m9S1qg&lib=MXR79vg1ZLOpNmISJxcAQR38eJs5q9m5W';
 
             try {
                 const response = await fetch(scriptUrl);
@@ -36,7 +39,7 @@ export const ItemList = () => {
 
     const newData = data && Array.isArray(data) ? data.slice(1) : [];
 
-    const preloadImage = (src : any, index : any) => {
+    const preloadImage = (src: any, index: any) => {
         const img = new Image();
         img.src = src;
         img.onload = () => {
@@ -51,7 +54,7 @@ export const ItemList = () => {
     useEffect(() => {
         if (newData.length > 0) {
             newData.forEach((item, index) => {
-                preloadImage(item[1], index);
+                preloadImage(item[3], index);
             });
         }
     }, [newData]);
@@ -66,7 +69,7 @@ export const ItemList = () => {
 
     const filteredData = newData.filter((item: any) =>
         item[0].toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item[2].toLowerCase().includes(searchTerm.toLowerCase())
+        item[1].toLowerCase().includes(searchTerm.toLowerCase()) 
     );
 
     return (
@@ -74,21 +77,12 @@ export const ItemList = () => {
             {loading ? <Loader /> : null}
             {data && (
                 <>
-                   <form role="search" className='search-form'>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="search-svg"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                        <input 
-                            type="text" 
-                            className='search-input' 
-                            placeholder='Я ищу ...' 
-                            value={searchTerm}
-                            onChange={handleSearchChange}
-                        />
-                        {searchTerm && (
-                            <button type="button" className="clear-button" onClick={clearSearch}>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                            </button>
-                        )}
-                    </form>
+                    <Search
+                        searchTerm={searchTerm}
+                        onSearchChange={handleSearchChange}
+                        onClearSearch={clearSearch}
+                    />
+                    <Filter FilterIndex={filteredData.length}/>
                     <div className='item-list'>
                         {filteredData.map((item: any, index: number) => (
                             <Link to={`/shoes/${index + 1}`} key={index} className='item'>
@@ -97,16 +91,16 @@ export const ItemList = () => {
                                     {imagesLoaded[index] && (
                                         <img
                                             className='item-image'
-                                            src={item[1]}
-                                            alt={`Изображение товара ${item[0]}`}
+                                            src={item[3]}
+                                            alt={`Изображение товара ${item[1]}`}
                                         />
                                     )}
                                 </div>
                                 <div className='price'>
-                                    <div className='new-price'>{item[23]}₽</div>
-                                    <div className='old-price'>{Math.round(item[23] * 1.1)}₽</div>
+                                    <div className='new-price'>{item[24]}₽</div>
+                                    <div className='old-price'>{Math.round(item[24] * 1.1)}₽</div>
                                 </div>
-                                <div className='item-info'>{item[0]} ({item[2]})</div>
+                                <div className='item-info'>{item[0]} {item[1]} ({item[2]})</div>
                             </Link>
                         ))}
                     </div>

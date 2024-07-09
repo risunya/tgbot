@@ -7,7 +7,7 @@ export const Header = () => {
     return (
         <div className='header'>
             <Link to='/'>
-                <div className='header-name'>Кроссовки</div>
+                <div className='header-name'>Каталог</div>
             </Link>
             <div className='helpers'>
                 <ThemeButton/>

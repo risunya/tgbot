@@ -43,7 +43,7 @@
     overflow: hidden;
 
     &.active-popup {
-        max-height: 50vh; // высота половины экрана
+        max-height: 50vh; // Fixed height for all popups
         opacity: 1;
         transition: max-height 600ms ease, opacity 600ms ease;
     }
@@ -54,6 +54,9 @@
     }
 
     .close-popup {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
         color: var(--text-color);
         cursor: pointer;
     }

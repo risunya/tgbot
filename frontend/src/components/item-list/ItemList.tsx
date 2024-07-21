@@ -11,6 +11,10 @@ export const ItemList = () => {
     const [loading, setLoading] = useState(true);
     const [imagesLoaded, setImagesLoaded] = useState<boolean[]>([]);
     const [searchTerm, setSearchTerm] = useState<string>('');
+    const [filteredData, setFilteredData] = useState<any[]>([]);
+    const [uniqueSizes, setUniqueSizes] = useState<string[]>([]);
+    const [uniqueBrands, setUniqueBrands] = useState<{ brand: string, count: number }[]>([]);
+    const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
     useEffect(() => {
         const fetchData = async () => {
@@ -37,7 +41,61 @@ export const ItemList = () => {
         fetchData();
     }, []);
 
-    const newData = data && Array.isArray(data) ? data.slice(1) : [];
+    useEffect(() => {
+        if (data) {
+            const newData = data.slice(1);
+            setFilteredData(newData);
+
+            // Extract unique sizes and brands
+            const sizesSet = new Set<string>();
+            const brandsCount: { [key: string]: number } = {};
+
+            newData.forEach((item: any) => {
+                sizesSet.add(item[2]); // Assuming size is at index 2
+                const brand = item[1]; // Assuming brand is at index 1
+                if (brandsCount[brand]) {
+                    brandsCount[brand]++;
+                } else {
+                    brandsCount[brand] = 1;
+                }
+            });
+
+            setUniqueSizes(Array.from(sizesSet));
+            setUniqueBrands(Object.entries(brandsCount).map(([brand, count]) => ({ brand, count })));
+        }
+    }, [data]);
+
+    useEffect(() => {
+        const sortedData = [...filteredData].sort((a, b) => {
+            const priceA = parseFloat(a[24]); // Assuming price is at index 24
+            const priceB = parseFloat(b[24]);
+            return sortOrder === 'asc' ? priceA - priceB : priceB - priceA;
+        });
+        setFilteredData(sortedData);
+    }, [sortOrder]);
+
+    const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchTerm(event.target.value);
+    };
+
+    const clearSearch = () => {
+        setSearchTerm('');
+    };
+
+    const handleFilter = (sizeFilter: string[], brandFilter: string[], sort: 'asc' | 'desc') => {
+        setSortOrder(sort);
+        let filtered = data.slice(1);
+
+        if (sizeFilter.length > 0) {
+            filtered = filtered.filter(item => sizeFilter.includes(item[2]));
+        }
+
+        if (brandFilter.length > 0) {
+            filtered = filtered.filter(item => brandFilter.includes(item[1]));
+        }
+
+        setFilteredData(filtered);
+    };
 
     const preloadImage = (src: any, index: any) => {
         const img = new Image();
@@ -52,22 +110,14 @@ export const ItemList = () => {
     };
 
     useEffect(() => {
-        if (newData.length > 0) {
-            newData.forEach((item, index) => {
+        if (filteredData.length > 0) {
+            filteredData.forEach((item, index) => {
                 preloadImage(item[3], index);
             });
         }
-    }, [newData]);
+    }, [filteredData]);
 
-    const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSearchTerm(event.target.value);
-    };
-
-    const clearSearch = () => {
-        setSearchTerm('');
-    };
-
-    const filteredData = newData.filter((item: any) =>
+    const filteredSearchData = filteredData.filter((item: any) =>
         item[0].toLowerCase().includes(searchTerm.toLowerCase()) ||
         item[1].toLowerCase().includes(searchTerm.toLowerCase()) 
     );
@@ -82,9 +132,14 @@ export const ItemList = () => {
                         onSearchChange={handleSearchChange}
                         onClearSearch={clearSearch}
                     />
-                    <Filter FilterIndex={filteredData.length}/>
+                    <Filter
+                        FilterIndex={filteredSearchData.length}
+                        sizes={uniqueSizes}
+                        brands={uniqueBrands}
+                        onFilter={handleFilter}
+                    />
                     <div className='item-list'>
-                        {filteredData.map((item: any, index: number) => (
+                        {filteredSearchData.map((item: any, index: number) => (
                             <Link to={`/shoes/${index + 1}`} key={index} className='item'>
                                 <div className='item-container'>
                                     {!imagesLoaded[index] && <div className='skeleton-image' />}

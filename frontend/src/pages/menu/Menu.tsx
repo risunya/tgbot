@@ -13,12 +13,13 @@ export const Menu = () => {
                         <img className="item-pic" src="./shop-logos/atletika.jpg" alt="" />
                     </div>
                 </Link>
-                <Link to='/trunner'>
-                    <div className='intro-menu__item'>
+    
+                {/* <Link to='/trunner'> */} 
+                    <div className='intro-menu__item disabled'>
                         <div className="item-name">TRunner Gang</div>
                         <img className="item-pic" src="./shop-logos/trunner.jpg" alt="" />
                     </div>
-                </Link>
+                {/* </Link> */} 
                 <div className='intro-menu__item disabled'>
                     <div className="item-name">sPort Shop</div>
                     <img className="item-pic" src="./shop-logos/p-logo.jpg" alt="" />

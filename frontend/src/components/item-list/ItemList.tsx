@@ -1,4 +1,3 @@
-// ItemList.tsx
 import './itemlist.scss';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -6,14 +5,24 @@ import { Loader } from '../../components/loader/Loader';
 import { Search } from '../../components/search/Search';
 import { Filter } from '../filter/Filter';
 
+interface Item {
+    brand: string;
+    model: string;
+    otherField1: string;
+    imageUrl: string;
+    sizes: string[];
+    price: string;
+}
+
 export const ItemList = () => {
-    const [data, setData] = useState<any>(null);
+    const [data, setData] = useState<Item[]>([]);
     const [loading, setLoading] = useState(true);
     const [imagesLoaded, setImagesLoaded] = useState<boolean[]>([]);
     const [searchTerm, setSearchTerm] = useState<string>('');
-    const [filteredData, setFilteredData] = useState<any[]>([]);
-    const [uniqueSizes, setUniqueSizes] = useState<string[]>([]);
+    const [filteredData, setFilteredData] = useState<Item[]>([]);
+    const [sizesCount, setSizesCount] = useState<{ [size: string]: number }>({});
     const [uniqueBrands, setUniqueBrands] = useState<{ brand: string, count: number }[]>([]);
+    const [uniqueModels, setUniqueModels] = useState<{ model: string, count: number }[]>([]);
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
     useEffect(() => {
@@ -26,15 +35,21 @@ export const ItemList = () => {
                     throw new Error('Ошибка при получении данных: ' + response.status);
                 }
                 const jsonData = await response.json();
-                console.log('Полученные данные:', jsonData); // Добавлено отладочное сообщение
-                setData(jsonData.result);
-                setImagesLoaded(new Array(jsonData.result.length).fill(false));
+                console.log('Полученные данные:', jsonData);
+                const items: Item[] = jsonData.result.slice(1).map((item: any) => ({
+                    brand: item[0],
+                    model: item[1],
+                    otherField1: item[2],
+                    imageUrl: item[3],
+                    sizes: item.slice(4, 23).filter((size: string) => size), // Assuming sizes are from index 4 to 22
+                    price: item[24]
+                }));
+                setData(items);
+                setImagesLoaded(new Array(items.length).fill(false));
             } catch (error) {
                 console.error('Ошибка:', error);
             } finally {
-                setTimeout(() => {
-                    setLoading(false);
-                }, 0);
+                setLoading(false);
             }
         };
 
@@ -42,33 +57,39 @@ export const ItemList = () => {
     }, []);
 
     useEffect(() => {
-        if (data) {
-            const newData = data.slice(1);
-            setFilteredData(newData);
+        if (data.length > 0) {
+            setFilteredData(data);
 
-            // Extract unique sizes and brands
-            const sizesSet = new Set<string>();
-            const brandsCount: { [key: string]: number } = {};
-
-            newData.forEach((item: any) => {
-                sizesSet.add(item[2]); // Assuming size is at index 2
-                const brand = item[1]; // Assuming brand is at index 1
-                if (brandsCount[brand]) {
-                    brandsCount[brand]++;
-                } else {
-                    brandsCount[brand] = 1;
-                }
+            // Подсчет размеров
+            const sizesCount: { [size: string]: number } = {};
+            data.forEach((item) => {
+                item.sizes.forEach((size) => {
+                    sizesCount[size] = (sizesCount[size] || 0) + 1;
+                });
             });
 
-            setUniqueSizes(Array.from(sizesSet));
+            setSizesCount(sizesCount);
+
+            // Подсчет брендов и моделей
+            const brandsCount: { [key: string]: number } = {};
+            const modelsCount: { [key: string]: number } = {};
+
+            data.forEach((item) => {
+                const brand = item.brand;
+                const model = item.model;
+                brandsCount[brand] = (brandsCount[brand] || 0) + 1;
+                modelsCount[model] = (modelsCount[model] || 0) + 1;
+            });
+
             setUniqueBrands(Object.entries(brandsCount).map(([brand, count]) => ({ brand, count })));
+            setUniqueModels(Object.entries(modelsCount).map(([model, count]) => ({ model, count })));
         }
     }, [data]);
 
     useEffect(() => {
         const sortedData = [...filteredData].sort((a, b) => {
-            const priceA = parseFloat(a[24]); // Assuming price is at index 24
-            const priceB = parseFloat(b[24]);
+            const priceA = parseFloat(a.price); // Assuming price is a string
+            const priceB = parseFloat(b.price);
             return sortOrder === 'asc' ? priceA - priceB : priceB - priceA;
         });
         setFilteredData(sortedData);
@@ -82,22 +103,26 @@ export const ItemList = () => {
         setSearchTerm('');
     };
 
-    const handleFilter = (sizeFilter: string[], brandFilter: string[], sort: 'asc' | 'desc') => {
+    const handleFilter = (sizeFilter: string[], brandFilter: string[], modelFilter: string[], sort: 'asc' | 'desc') => {
         setSortOrder(sort);
-        let filtered = data.slice(1);
+        let filtered = data;
 
         if (sizeFilter.length > 0) {
-            filtered = filtered.filter(item => sizeFilter.includes(item[2]));
+            filtered = filtered.filter(item => item.sizes.some(size => sizeFilter.includes(size)));
         }
 
         if (brandFilter.length > 0) {
-            filtered = filtered.filter(item => brandFilter.includes(item[1]));
+            filtered = filtered.filter(item => brandFilter.includes(item.brand));
+        }
+
+        if (modelFilter.length > 0) {
+            filtered = filtered.filter(item => modelFilter.includes(item.model));
         }
 
         setFilteredData(filtered);
     };
 
-    const preloadImage = (src: any, index: any) => {
+    const preloadImage = (src: string, index: number) => {
         const img = new Image();
         img.src = src;
         img.onload = () => {
@@ -112,20 +137,20 @@ export const ItemList = () => {
     useEffect(() => {
         if (filteredData.length > 0) {
             filteredData.forEach((item, index) => {
-                preloadImage(item[3], index);
+                preloadImage(item.imageUrl, index);
             });
         }
     }, [filteredData]);
 
-    const filteredSearchData = filteredData.filter((item: any) =>
-        item[0].toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item[1].toLowerCase().includes(searchTerm.toLowerCase()) 
+    const filteredSearchData = filteredData.filter((item) =>
+        item.brand.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.model.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     return (
         <>
             {loading ? <Loader /> : null}
-            {data && (
+            {data.length > 0 && (
                 <>
                     <Search
                         searchTerm={searchTerm}
@@ -134,28 +159,30 @@ export const ItemList = () => {
                     />
                     <Filter
                         FilterIndex={filteredSearchData.length}
-                        sizes={uniqueSizes}
+                        sizes={sizesCount}
                         brands={uniqueBrands}
+                        models={uniqueModels}
                         onFilter={handleFilter}
                     />
                     <div className='item-list'>
-                        {filteredSearchData.map((item: any, index: number) => (
+                        {filteredSearchData.map((item, index) => (
                             <Link to={`/shoes/${index + 1}`} key={index} className='item'>
                                 <div className='item-container'>
                                     {!imagesLoaded[index] && <div className='skeleton-image' />}
                                     {imagesLoaded[index] && (
                                         <img
                                             className='item-image'
-                                            src={item[3]}
-                                            alt={`Изображение товара ${item[1]}`}
+                                            src={item.imageUrl}
+                                            alt={`Изображение товара ${item.model}`}
                                         />
                                     )}
                                 </div>
                                 <div className='price'>
-                                    <div className='new-price'>{item[24]}₽</div>
-                                    <div className='old-price'>{Math.round(item[24] * 1.1)}₽</div>
+                                    <div className='new-price'>{item.price}₽</div>
+                                    <div className='old-price'>{Math.round(parseFloat(item.price) * 1.1)}₽</div>
                                 </div>
-                                <div className='item-info'>{item[0]} {item[1]} ({item[2]})</div>
+                                <div className='item-info'>{item.brand} {item.model} ({item.otherField1})</div>
+                                
                             </Link>
                         ))}
                     </div>

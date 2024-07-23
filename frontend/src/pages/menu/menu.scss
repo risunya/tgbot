@@ -1,21 +1,27 @@
+$color: grey;
+$transparent: rgba(0, 0, 0, 0);
+
 .intro-menu__header {
     background-color: black;
     height: 15rem;
     display: flex;
     align-items: flex-end;
     margin-bottom: 1rem;
+
     .header-caption {
         color: white;
         padding: 2rem;
         font-size: 3rem;
     }
 }
+
 .intro-menu {
     display: flex;
     flex-direction: column;
     width: 95%;
     margin: 0 auto;
     gap: .5rem;
+
     .intro-menu__item {
         display: flex;
         flex-direction: row;
@@ -26,30 +32,47 @@
         border: 1px solid #23272f10;
         transition: .3s;
         text-decoration: none;
-            &:active {
-                transform: scale(.95);
-            }
-            &.disabled {
-                &:active {
-                    transform: none;
-                }
-                .item-name {
-                    color: #23272f7f;
-                }
-                img {
-                    filter: grayscale(1);
-                    opacity: .5;
-                }
-            }
-        .item-name {
-        font-size: 2.5rem;
-        color: black;
+
+        &:active {
+            transform: scale(.95);
         }
+
+        &.disabled {
+            &:active {
+                transform: none;
+            }
+
+            .item-name {
+                color: #23272f7f;
+            }
+
+            img {
+                filter: grayscale(1);
+                opacity: .7;
+            }
+
+            background: linear-gradient(-45deg,
+                    $transparent 49.9%, 
+                    $color 49.9%, $color 60%, 
+                    $transparent 60%
+                ),
+                linear-gradient(-45deg,
+                    $color 10%,
+                    $transparent 10%
+                );
+            background-size: 2em 2em;
+            background-color: var(--light-background-colors);
+        }
+
+        .item-name {
+            font-size: 2.5rem;
+            color: black;
+        }
+
         .item-pic {
             height: 10rem;
             width: 10rem;
             border-radius: 2rem;
         }
-   
     }
 }

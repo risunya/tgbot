@@ -1,41 +1,30 @@
-// Filter.tsx
 import { useState } from 'react';
 import './filter.scss';
 
 interface FilterProps {
     FilterIndex: number;
-    sizes: string[];
+    sizes: { [size: string]: number };
     brands: { brand: string, count: number }[];
-    onFilter: (sizeFilter: string[], brandFilter: string[], sort: 'asc' | 'desc') => void;
+    models: { model: string, count: number }[];
+    onFilter: (sizeFilter: string[], brandFilter: string[], modelFilter: string[], sort: 'asc' | 'desc') => void;
 }
 
-export const Filter = ({ FilterIndex, sizes, brands, onFilter }: FilterProps) => {
+export const Filter = ({ FilterIndex, sizes, brands, models, onFilter }: FilterProps) => {
     const [isOpened, setOpen] = useState(false);
     const [isOpenedSize, setIsOpenedSize] = useState(false);
     const [isOpenedBrand, setIsOpenedBrand] = useState(false);
+    const [isOpenedModel, setIsOpenedModel] = useState(false);
     const [isOpenedPrice, setIsOpenedPrice] = useState(false);
     const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
     const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
-    const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+    const [selectedModels, setSelectedModels] = useState<string[]>([]);
+    const [sortOrderChecked, setSortOrderChecked] = useState<'asc' | 'desc'>('asc');
 
-    const toggleSizePopup = () => {
-        setIsOpenedSize(true);
-        setIsOpenedBrand(false);
-        setIsOpenedPrice(false);
-        setOpen(true);
-    };
-
-    const toggleBrandPopup = () => {
-        setIsOpenedSize(false);
-        setIsOpenedBrand(true);
-        setIsOpenedPrice(false);
-        setOpen(true);
-    };
-
-    const togglePricePopup = () => {
-        setIsOpenedSize(false);
-        setIsOpenedBrand(false);
-        setIsOpenedPrice(true);
+    const togglePopup = (type: string) => {
+        setIsOpenedSize(type === 'size');
+        setIsOpenedBrand(type === 'brand');
+        setIsOpenedModel(type === 'model');
+        setIsOpenedPrice(type === 'price');
         setOpen(true);
     };
 
@@ -44,6 +33,7 @@ export const Filter = ({ FilterIndex, sizes, brands, onFilter }: FilterProps) =>
         setTimeout(() => {
             setIsOpenedSize(false);
             setIsOpenedBrand(false);
+            setIsOpenedModel(false);
             setIsOpenedPrice(false);
         }, 600); // Timeout matches the animation duration
     };
@@ -53,17 +43,19 @@ export const Filter = ({ FilterIndex, sizes, brands, onFilter }: FilterProps) =>
     };
 
     const handleBrandChange = (brand: string) => {
-        setSelectedBrands(prev => prev.includes(brand) ? prev.filter(b => b !== brand)         : [...prev, brand]);
+        setSelectedBrands(prev => prev.includes(brand) ? prev.filter(b => b !== brand) : [...prev, brand]);
     };
 
-    const applyFilters = () => {
-        onFilter(selectedSizes, selectedBrands, sortOrder);
-        closePopup();
+    const handleModelChange = (model: string) => {
+        setSelectedModels(prev => prev.includes(model) ? prev.filter(m => m !== model) : [...prev, model]);
     };
 
     const handleSortChange = (order: 'asc' | 'desc') => {
-        setSortOrder(order);
-        onFilter(selectedSizes, selectedBrands, order);
+        setSortOrderChecked(order);
+    };
+
+    const applyFilters = () => {
+        onFilter(selectedSizes, selectedBrands, selectedModels, sortOrderChecked);
         closePopup();
     };
 
@@ -72,9 +64,10 @@ export const Filter = ({ FilterIndex, sizes, brands, onFilter }: FilterProps) =>
             <div className="filter-wrapper">
                 <div className="found-number">Мы нашли {FilterIndex} товаров</div>
                 <div className="sort-list">
-                    <div className="sort-item" onClick={toggleSizePopup}>Размер</div>
-                    <div className="sort-item" onClick={toggleBrandPopup}>Бренд</div>
-                    <div className="sort-item" onClick={togglePricePopup}>Цена</div>
+                    <div className="sort-item" onClick={() => togglePopup('size')}>Размер</div>
+                    <div className="sort-item" onClick={() => togglePopup('brand')}>Бренд</div>
+                    <div className="sort-item" onClick={() => togglePopup('model')}>Модель</div>
+                    <div className="sort-item" onClick={() => togglePopup('price')}>Цена</div>
                 </div>
             </div>
             <div className={`popup size-popup ${isOpened && isOpenedSize ? 'active-popup' : ''}`}>
@@ -82,20 +75,25 @@ export const Filter = ({ FilterIndex, sizes, brands, onFilter }: FilterProps) =>
                 <div className='filter-properties'>
                     <div className='popup-name'>Размер</div>
                     <div className="filter-items">
-                        {sizes.map((size, index) => (
+                        {Object.entries(sizes).map(([size, count], index) => (
                             <div
                                 key={index}
                                 className={`filter-item ${selectedSizes.includes(size) ? 'selected' : ''}`}
                                 onClick={() => handleSizeChange(size)}
                             >
-                                {size}
+                                <input
+                                    type="checkbox"
+                                    checked={selectedSizes.includes(size)}
+                                    onChange={() => handleSizeChange(size)}
+                                />
+                                {size} ({count})
                             </div>
                         ))}
                     </div>
                     <div className="accept-button" onClick={applyFilters}>Применить</div>
                 </div>
                 <div onClick={closePopup} className='close-popup'>
-                    <img src="./close.svg" alt="Close" />
+                    <img src="/close.svg" alt="Close" />
                 </div>
             </div>
             <div className={`popup brand-popup ${isOpened && isOpenedBrand ? 'active-popup' : ''}`}>
@@ -103,20 +101,54 @@ export const Filter = ({ FilterIndex, sizes, brands, onFilter }: FilterProps) =>
                 <div className='filter-properties'>
                     <div className='popup-name'>Бренд</div>
                     <div className="filter-items">
-                        {brands.map((brand, index) => (
+                        {brands.length > 0 ? brands.map((brand, index) => (
                             <div
                                 key={index}
                                 className={`filter-item ${selectedBrands.includes(brand.brand) ? 'selected' : ''}`}
                                 onClick={() => handleBrandChange(brand.brand)}
                             >
+                                <input
+                                    type="checkbox"
+                                    checked={selectedBrands.includes(brand.brand)}
+                                    onChange={() => handleBrandChange(brand.brand)}
+                                />
                                 {brand.brand} ({brand.count})
                             </div>
-                        ))}
+                        )) : <div className='filter-item'>Нет доступных брендов</div>}
                     </div>
                     <div className="accept-button" onClick={applyFilters}>Применить</div>
                 </div>
                 <div onClick={closePopup} className='close-popup'>
-                    <img src="./close.svg" alt="Close" />
+                    <img src="/close.svg" alt="Close" />
+                </div>
+            </div>
+            <div className={`popup model-popup ${isOpened && isOpenedModel ? 'active-popup' : ''}`}>
+                <div className='popup-caption'>Фильтры</div>
+                <div className='filter-properties'>
+                    <div className='popup-name'>Модель</div>
+                    <div className="filter-items">
+                        {models.length > 0 ? models.map((model, index) => (
+                            <div className='item-wrapper'>
+                                <input
+                                type="checkbox"
+                                checked={selectedModels.includes(model.model)}
+                                onChange={() => handleModelChange(model.model)}
+                                />
+                                <label
+                                    key={index}
+                                    className={`filter-item ${selectedModels.includes(model.model) ? 'selected' : ''}`}
+                                    onClick={() => handleModelChange(model.model)}
+                                >
+                                    
+                                    {model.model} ({model.count})
+                                </label>
+                            </div>
+                        )) : <div className='filter-item'>Нет доступных моделей</div>}
+                    </div>
+                    <div className="accept-button" onClick={applyFilters}>Применить</div>
+                </div>
+                <div onClick={closePopup} className='close-popup'>
+                    <img src="/close.svg" alt="Close" />
                 </div>
             </div>
             <div className={`popup price-popup ${isOpened && isOpenedPrice ? 'active-popup' : ''}`}>
@@ -125,22 +157,32 @@ export const Filter = ({ FilterIndex, sizes, brands, onFilter }: FilterProps) =>
                     <div className='popup-name'>Цена</div>
                     <div className="filter-items">
                         <div
-                            className={`filter-item ${sortOrder === 'asc' ? 'selected' : ''}`}
+                            className={`filter-item ${sortOrderChecked === 'asc' ? 'selected' : ''}`}
                             onClick={() => handleSortChange('asc')}
                         >
+                            <input
+                                type="checkbox"
+                                checked={sortOrderChecked === 'asc'}
+                                onChange={() => handleSortChange('asc')}
+                            />
                             По возрастанию
                         </div>
                         <div
-                            className={`filter-item ${sortOrder === 'desc' ? 'selected' : ''}`}
+                            className={`filter-item ${sortOrderChecked === 'desc' ? 'selected' : ''}`}
                             onClick={() => handleSortChange('desc')}
                         >
+                            <input
+                                type="checkbox"
+                                checked={sortOrderChecked === 'desc'}
+                                onChange={() => handleSortChange('desc')}
+                            />
                             По убыванию
                         </div>
                     </div>
                     <div className="accept-button" onClick={applyFilters}>Применить</div>
                 </div>
                 <div onClick={closePopup} className='close-popup'>
-                    <img src="./close.svg" alt="Close" />
+                    <img src="/close.svg" alt="Close" />
                 </div>
             </div>
         </>

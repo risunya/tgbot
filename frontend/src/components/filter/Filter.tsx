@@ -76,17 +76,19 @@ export const Filter = ({ FilterIndex, sizes, brands, models, onFilter }: FilterP
                     <div className='popup-name'>Размер</div>
                     <div className="filter-items">
                         {Object.entries(sizes).map(([size, count], index) => (
-                            <div
+                            <div className='item-wrapper'>
+                                <div
                                 key={index}
                                 className={`filter-item ${selectedSizes.includes(size) ? 'selected' : ''}`}
                                 onClick={() => handleSizeChange(size)}
-                            >
-                                <input
-                                    type="checkbox"
-                                    checked={selectedSizes.includes(size)}
-                                    onChange={() => handleSizeChange(size)}
-                                />
-                                {size} ({count})
+                                >
+                                    <input
+                                        type="checkbox"
+                                        checked={selectedSizes.includes(size)}
+                                        onChange={() => handleSizeChange(size)}
+                                    />
+                                    {size} ({count})
+                                </div>
                             </div>
                         ))}
                     </div>
@@ -102,17 +104,19 @@ export const Filter = ({ FilterIndex, sizes, brands, models, onFilter }: FilterP
                     <div className='popup-name'>Бренд</div>
                     <div className="filter-items">
                         {brands.length > 0 ? brands.map((brand, index) => (
-                            <div
+                            <div className='item-wrapper'>
+                                <div
                                 key={index}
                                 className={`filter-item ${selectedBrands.includes(brand.brand) ? 'selected' : ''}`}
                                 onClick={() => handleBrandChange(brand.brand)}
-                            >
-                                <input
-                                    type="checkbox"
-                                    checked={selectedBrands.includes(brand.brand)}
-                                    onChange={() => handleBrandChange(brand.brand)}
-                                />
-                                {brand.brand} ({brand.count})
+                                >
+                                    <input
+                                        type="checkbox"
+                                        checked={selectedBrands.includes(brand.brand)}
+                                        onChange={() => handleBrandChange(brand.brand)}
+                                    />
+                                    {brand.brand} ({brand.count})
+                                </div>
                             </div>
                         )) : <div className='filter-item'>Нет доступных брендов</div>}
                     </div>
@@ -139,7 +143,6 @@ export const Filter = ({ FilterIndex, sizes, brands, models, onFilter }: FilterP
                                     className={`filter-item ${selectedModels.includes(model.model) ? 'selected' : ''}`}
                                     onClick={() => handleModelChange(model.model)}
                                 >
-                                    
                                     {model.model} ({model.count})
                                 </label>
                             </div>
@@ -156,27 +159,29 @@ export const Filter = ({ FilterIndex, sizes, brands, models, onFilter }: FilterP
                 <div className='filter-properties'>
                     <div className='popup-name'>Цена</div>
                     <div className="filter-items">
-                        <div
-                            className={`filter-item ${sortOrderChecked === 'asc' ? 'selected' : ''}`}
-                            onClick={() => handleSortChange('asc')}
-                        >
-                            <input
-                                type="checkbox"
-                                checked={sortOrderChecked === 'asc'}
-                                onChange={() => handleSortChange('asc')}
-                            />
-                            По возрастанию
-                        </div>
-                        <div
-                            className={`filter-item ${sortOrderChecked === 'desc' ? 'selected' : ''}`}
-                            onClick={() => handleSortChange('desc')}
-                        >
-                            <input
-                                type="checkbox"
-                                checked={sortOrderChecked === 'desc'}
-                                onChange={() => handleSortChange('desc')}
-                            />
-                            По убыванию
+                        <div className='item-wrapper'>
+                            <label
+                                className={`filter-item ${sortOrderChecked === 'asc' ? 'selected' : ''}`}
+                                onClick={() => handleSortChange('asc')}
+                            >
+                                <input
+                                    type="checkbox"
+                                    checked={sortOrderChecked === 'asc'}
+                                    onChange={() => handleSortChange('asc')}
+                                />
+                                По возрастанию
+                            </label>
+                            <label
+                                className={`filter-item ${sortOrderChecked === 'desc' ? 'selected' : ''}`}
+                                onClick={() => handleSortChange('desc')}
+                            >
+                                <input
+                                    type="checkbox"
+                                    checked={sortOrderChecked === 'desc'}
+                                    onChange={() => handleSortChange('desc')}
+                                />
+                                По убыванию
+                            </label>
                         </div>
                     </div>
                     <div className="accept-button" onClick={applyFilters}>Применить</div>

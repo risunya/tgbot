@@ -1,10 +1,12 @@
 import { Link } from 'react-router-dom'
 import './menu.scss'
+import { ThemeButton } from '../../components/themeButton/ThemeButton'
 export const Menu = () => {
     return (
         <>
             <div className='intro-menu__header'>
                 <div className="header-caption">Каталог</div>
+                <ThemeButton />
             </div>
             <div className='intro-menu'>
                 <Link to='/atletika'>

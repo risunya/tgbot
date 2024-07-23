@@ -1,5 +1,6 @@
 html[data-theme='light'] {
     --text-color:black;
+    --light-text-color: rgba(0, 0, 0, 0.2);
     --second-text-color: rgb(8 126 164 / 1);
     --reverse-text-color:white;
     --background-color: white;
@@ -12,6 +13,7 @@ html[data-theme='light'] {
 
 html[data-theme='dark'] {
     --text-color:white;
+    --light-text-color: rgba(255, 255, 255, 0.2);
     --second-text-color: #58c4dc;
     --reverse-text-color:black;
     --background-color: #23272f;

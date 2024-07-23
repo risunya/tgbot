@@ -45,7 +45,7 @@
 
     &.active-popup {
         border-top: 1px solid var(--light-background-color);
-        max-height: 40vh; // Fixed height for all popups
+        max-height: 50vh; // Fixed height for all popups
         opacity: 1;
         transition: max-height 600ms ease, opacity 600ms ease;
     }
@@ -56,12 +56,13 @@
     }
     .filter-properties {
         width: 100%;
-        height: 50vh;
+        height: fit-content;
         display: flex;
         flex-direction: column;
         width: 90%;
         margin: 0 auto;
         justify-content: space-around;
+        
         .popup-name {
             font-size: 2rem;
         }
@@ -72,6 +73,8 @@
             align-items: start;
             justify-content: start;
             height: 60%;
+            padding: 1rem 0;
+
             .item-wrapper {
                 display: flex;
                 flex-direction: row;

@@ -1,16 +1,18 @@
-$color: grey;
+$color: rgba(128, 128, 128, 0.252);
 $transparent: rgba(0, 0, 0, 0);
 
 .intro-menu__header {
-    background-color: black;
-    height: 15rem;
+    background-color: var(--background-color);
+    height: 10rem;
     display: flex;
     align-items: flex-end;
-    margin-bottom: 1rem;
-
+    justify-content: space-between;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border-bottom: .2rem solid var(--light-background-color);
+    transition: .3s;
     .header-caption {
-        color: white;
-        padding: 2rem;
+        color: var(--text-color);
         font-size: 3rem;
     }
 }
@@ -29,7 +31,7 @@ $transparent: rgba(0, 0, 0, 0);
         align-items: center;
         justify-content: space-between;
         padding: 1rem 2rem;
-        border: 1px solid #23272f10;
+        border: 0.1rem solid var(--light-background-color);
         transition: .3s;
         text-decoration: none;
 
@@ -43,7 +45,7 @@ $transparent: rgba(0, 0, 0, 0);
             }
 
             .item-name {
-                color: #23272f7f;
+                color: var(--light-text-color);
             }
 
             img {
@@ -66,7 +68,7 @@ $transparent: rgba(0, 0, 0, 0);
 
         .item-name {
             font-size: 2.5rem;
-            color: black;
+            color: var(--text-color);
         }
 
         .item-pic {

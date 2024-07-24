@@ -27,7 +27,7 @@ export const ItemList = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const scriptUrl = 'https://script.googleusercontent.com/macros/echo?user_content_key=d90MFXtmuW3izfepKfq7ZfiPRyCxr2vldRQYJ27qcoUZaMHQhwQViqcnhOVO1HlAFjB4I1vwrXZ5QzkeLCGzV8IQqgdBXFUWm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnOxQImybUPuS6gyOh04-ChOeoLqomWZiVh4nbMH2jGLztWY58bMJ5DdljgQhm1tYyqp3CBAJDDp_qPpfSoylfD5JQhe5m9S1qg&lib=MXR79vg1ZLOpNmISJxcAQR38eJs5q9m5W';
+            const scriptUrl = 'https://script.googleusercontent.com/macros/echo?user_content_key=ioZrSrrljcJ27lqaUkL7Oyp4Bzn9Hws1-RNYjkYicR2wtmng5Kko3J-5L0PlvtcUa5t8xmClKBBXpF00TIdEQ6B3GJaHfclIm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnI-xyotCUTNaW-yzP64ppF_YYh_o1SUHXOdr4MEA4Xztmg4FCJU_GtQ3Z82WAYIjSaHS3Sg6Noqz7u56m-eeIVJlOnwZOtit6Q&lib=MXR79vg1ZLOpNmISJxcAQR38eJs5q9m5W';
 
             try {
                 const response = await fetch(scriptUrl);
@@ -37,12 +37,12 @@ export const ItemList = () => {
                 const jsonData = await response.json();
                 console.log('Полученные данные:', jsonData);
                 const items: Item[] = jsonData.result.slice(1).map((item: any) => ({
-                    brand: item[0],
-                    model: item[1],
-                    otherField1: item[2],
-                    imageUrl: item[3],
-                    sizes: item.slice(4, 23).filter((size: string) => size), // Assuming sizes are from index 4 to 22
-                    price: item[24]
+                    brand: item[2],
+                    model: item[3],
+                    otherField1: item[4],
+                    imageUrl: item[5],
+                    sizes: item.slice(6, 25).filter((size: string) => size), // Assuming sizes are from index 4 to 22
+                    price: item[26]
                 }));
                 setData(items);
                 setImagesLoaded(new Array(items.length).fill(false));
@@ -166,7 +166,7 @@ export const ItemList = () => {
                     />
                     <div className='item-list'>
                         {filteredSearchData.map((item, index) => (
-                            <Link to={`/shoes/${index + 1}`} key={index} className='item'>
+                            <Link to={`/shoes/${+index + 1}`} key={index} className='item'>
                                 <div className='item-container'>
                                     {!imagesLoaded[index] && <div className='skeleton-image' />}
                                     {imagesLoaded[index] && (

@@ -75,6 +75,33 @@ export const ItemList = () => {
         if (data.length > 0) {
             setFilteredData(data);
 
+            // Подсчет размеров
+            const countSizes = (items: Item[], validSizes: number[]) => {
+                const counts: { [key: number]: number } = {};
+
+                // Инициализируем все допустимые размеры в counts с значением 0
+                for (const size of validSizes) {
+                    counts[size] = 0;
+                }
+
+                items.forEach(item => {
+                    item.sizes.forEach((size, index) => {
+                        if (size > 0 && validSizes.includes(validSizes[index])) {
+                            counts[validSizes[index]] += size;
+                        }
+                    });
+                });
+
+                // Фильтруем только ненулевые значения
+                const nonZeroCounts = Object.fromEntries(
+                    Object.entries(counts).filter(([, value]) => value !== 0)
+                );
+                setSizesCount(nonZeroCounts);
+            };
+
+            // Вызов функции
+            countSizes(data, validSizes);
+
             // Подсчет брендов и моделей
             const brandsCount: { [key: string]: number } = {};
             const modelsCount: { [key: string]: number } = {};
@@ -194,8 +221,9 @@ export const ItemList = () => {
                                     <div className='item-info'>{item.brand} {item.model} ({item.otherField1})</div>
                                     <div className='item-sizes'>
                                     
-                                        {item.sizes.map((size) => 
-                                        (size == '') ? '' : <div>{size} </div> )}
+                                    {item.sizes.map((size) => 
+                                        (size == null) ? '' : <div key={size}>{size}</div>
+                                    )}
                                     </div>
                                 </Link>
                             );

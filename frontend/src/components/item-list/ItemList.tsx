@@ -222,7 +222,7 @@ export const ItemList = () => {
                                     <div className='item-sizes'>
                                     
                                     {item.sizes.map((size) => 
-                                        (size == null) ? '' : <div key={size}>{size}</div>
+                                        (String(size) === '') ? '' : <div key={size}>{size}</div>
                                     )}
                                     </div>
                                 </Link>

@@ -3,6 +3,16 @@
         grid-template-columns: 1fr 1fr;
         gap: 5px;
         justify-content: space-between;
+        .item-sizes {
+            margin: 0 auto;
+            width: 90%;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            font-size: 1rem;
+            gap: .5rem;
+            color: var(--text-color);
+        }
         .item {
             border-radius: 2rem;
             border: 1px solid var(--light-background-color);
@@ -11,6 +21,9 @@
             padding: 3% 5%;
             width: 90%;
             height: 279px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
             .item-container {
                 display: flex;
                 justify-content: center;
@@ -52,7 +65,7 @@
                }
             }
             .item-info {
-                margin: 1px 0;
+                margin: 2px 5%;
                 font-size: 1.4rem;
                 text-align:left;
                 font-weight: 450;

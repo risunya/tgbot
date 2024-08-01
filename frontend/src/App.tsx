@@ -17,7 +17,7 @@ import { SprintSpikes } from './pages/atletika/spikes/SprintSpikes'
 import { MiddleSpikes } from './pages/atletika/spikes/MiddleSpikes'
 
 
-function App() {
+export const App = () => {
   return (
             <>
               <Routes>
@@ -42,4 +42,3 @@ function App() {
   )
 }
 
-export default App

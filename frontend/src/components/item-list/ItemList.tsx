@@ -14,7 +14,7 @@ interface Item {
     price: string;
 }
 
-export const ItemList = () => {
+export const ItemList = ({sex} : any) => {
     const validSizes = [22, 22.5, 23, 23.5, 24, 24.5, 25, 25.5, 26, 26.5, 27, 27.5, 28, 28.5, 29, 29.5, 30, 30.5, 31];
     const [data, setData] = useState<Item[]>([]);
     const [loading, setLoading] = useState(true);
@@ -50,7 +50,8 @@ export const ItemList = () => {
                         throw new Error('Ошибка при получении данных: ' + response.status);
                     }
                     const jsonData = await response.json();
-                    const items: Item[] = jsonData.result.slice(2).map((item: any) => ({
+                    const sexFilteredItems = jsonData.result.filter((item: any) => item[1] == sex);
+                    const items: Item[] = sexFilteredItems.slice(2).map((item: any) => ({
                         brand: item[2].trim(),
                         model: item[3],
                         otherField1: item[4],

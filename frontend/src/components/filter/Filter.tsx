@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import './filter.scss';
+import { CloseButton } from './CloseButton';
 
 interface FilterProps {
     FilterIndex: number;
@@ -89,7 +90,7 @@ export const Filter = ({ FilterIndex, sizes, brands, models, onFilter }: FilterP
                                     />
                                     <label
                                      key={size}
-                                     className={`filter-item ${selectedSizes.includes(size) ? 'selected' : ''}`}
+                                     className={ `filter-item ${selectedSizes.includes(size) ? 'selected' : ''}`}
                                      onClick={() => handleSizeChange(size)}
                                     >
                                     {size} см
@@ -100,7 +101,7 @@ export const Filter = ({ FilterIndex, sizes, brands, models, onFilter }: FilterP
                     <div className="accept-button" onClick={applyFilters}>Применить</div>
                 </div>
                 <div onClick={closePopup} className='close-popup'>
-                    <img src="/close.svg" alt="Close" />
+                    <CloseButton />
                 </div>
             </div>
             <div className={`popup brand-popup ${isOpened && isOpenedBrand ? 'active-popup' : ''}`}>
@@ -128,7 +129,7 @@ export const Filter = ({ FilterIndex, sizes, brands, models, onFilter }: FilterP
                     <div className="accept-button" onClick={applyFilters}>Применить</div>
                 </div>
                 <div onClick={closePopup} className='close-popup'>
-                    <img src="/close.svg" alt="Close" />
+                    <CloseButton />
                 </div>
             </div>
             <div className={`popup model-popup ${isOpened && isOpenedModel ? 'active-popup' : ''}`}>
@@ -158,7 +159,7 @@ export const Filter = ({ FilterIndex, sizes, brands, models, onFilter }: FilterP
                     <div className="accept-button" onClick={applyFilters}>Применить</div>
                 </div>
                 <div onClick={closePopup} className='close-popup'>
-                    <img src="/close.svg" alt="Close" />
+                    <CloseButton />
                 </div>
             </div>
             <div className={`popup price-popup ${isOpened && isOpenedPrice ? 'active-popup' : ''}`}>
@@ -194,7 +195,7 @@ export const Filter = ({ FilterIndex, sizes, brands, models, onFilter }: FilterP
                     <div className="accept-button" onClick={applyFilters}>Применить</div>
                 </div>
                 <div onClick={closePopup} className='close-popup'>
-                    <img src="/close.svg" alt="Close" />
+                    <CloseButton />
                 </div>
             </div>
         </>

@@ -3,7 +3,7 @@ import { Accordion } from '../accordion/Accordion';
 import { ItemList } from '../item-list/ItemList';
 import { Header } from '../header/Header';
 
-export const Home = () => {
+export const Home = ({sex} : any) => {
    
     return (
        <>
@@ -11,7 +11,9 @@ export const Home = () => {
         <div className='content'>
             <>
                 <Accordion />
-                <ItemList />
+                <ItemList 
+                sex={sex}
+                />
             </>
         </div>
        </>

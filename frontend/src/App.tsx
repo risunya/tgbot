@@ -28,7 +28,7 @@ export const App = () => {
                 <Route path='/atletika/shoes/woman' element={<WomanShoes/>}/>
                 <Route path='/atletika/spikes' element={<Spikes/>}/>
                 <Route path='/atletika/spikes/middle' element={<MiddleSpikes/>}/>
-                <Route path='/atletika/spikes/spint' element={<SprintSpikes/>}/>
+                <Route path='/atletika/spikes/sprint' element={<SprintSpikes/>}/>
                 <Route path='/atletika/spikes/tech' element={<TechSpikes/>}/>
                 <Route path='/atletika/equipment' element={<Equipment/>}/>
                 <Route path='/atletika/equipment/accessories' element={<Accessories/>}/>

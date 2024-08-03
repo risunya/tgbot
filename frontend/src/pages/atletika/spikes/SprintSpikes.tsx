@@ -2,6 +2,9 @@ import { Home } from "../../../components/home/Home"
 
 export const SprintSpikes = () => {
     return (
-        <Home/>
+        <Home
+        kind={"Шиповки"}
+        sex={"Спринт"}
+        />
     )
 }

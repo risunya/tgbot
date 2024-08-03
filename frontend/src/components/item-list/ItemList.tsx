@@ -14,7 +14,15 @@ interface Item {
     price: string;
 }
 
-export const ItemList = ({sex} : any) => {
+interface MyButtonProps {
+    /** The text to display inside the button */
+    kind: string;
+    /** Whether the button can be interacted with */
+    sex: string;
+}
+
+export const ItemList = ({ kind, sex }: MyButtonProps) => {
+
     const validSizes = [22, 22.5, 23, 23.5, 24, 24.5, 25, 25.5, 26, 26.5, 27, 27.5, 28, 28.5, 29, 29.5, 30, 30.5, 31];
     const [data, setData] = useState<Item[]>([]);
     const [loading, setLoading] = useState(true);
@@ -50,8 +58,10 @@ export const ItemList = ({sex} : any) => {
                         throw new Error('Ошибка при получении данных: ' + response.status);
                     }
                     const jsonData = await response.json();
-                    const sexFilteredItems = jsonData.result.filter((item: any) => item[1] == sex);
-                    const items: Item[] = sexFilteredItems.slice(2).map((item: any) => ({
+                    const kindFilteredItems = jsonData.result.filter((item: any) => item[0] == kind);
+                    const sexFilteredItems = kindFilteredItems.filter((item: any) => item[1] == sex);
+                    console.log(sexFilteredItems)
+                    const items: Item[] = sexFilteredItems.slice(0).map((item: any) => ({
                         brand: item[2].trim(),
                         model: item[3],
                         otherField1: item[4],

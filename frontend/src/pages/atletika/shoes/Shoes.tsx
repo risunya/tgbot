@@ -20,7 +20,6 @@ export const Shoes = () => {
                         <img className="item-pic" src="/item-logos/womanshoe.png" alt="" />
                     </div>
                 </Link> 
-                
             </div>
        </>
     )

@@ -82,18 +82,19 @@ export const Filter = ({ FilterIndex, sizes, brands, models, onFilter }: FilterP
                             size: Number(size)
                         })).sort((a, b) => a.size - b.size).map(({size}) => (
                             <div className='item-wrapper' key={size}>
-                                <div
-                                    className={`filter-item ${selectedSizes.includes(size) ? 'selected' : ''}`}
-                                    onClick={() => handleSizeChange(size)}
-                                >
                                     <input
                                         type="checkbox"
                                         checked={selectedSizes.includes(size)}
                                         onChange={() => handleSizeChange(size)}
                                     />
+                                    <label
+                                     key={size}
+                                     className={`filter-item ${selectedSizes.includes(size) ? 'selected' : ''}`}
+                                     onClick={() => handleSizeChange(size)}
+                                    >
                                     {size} см
+                                    </label>
                                 </div>
-                            </div>
                         ))}
                     </div>
                     <div className="accept-button" onClick={applyFilters}>Применить</div>
@@ -109,17 +110,18 @@ export const Filter = ({ FilterIndex, sizes, brands, models, onFilter }: FilterP
                     <div className="filter-items">
                         {brands.length > 0 ? brands.map((brand, index) => (
                             <div className='item-wrapper' key={index}>
-                                <div
-                                className={`filter-item ${selectedBrands.includes(brand.brand) ? 'selected' : ''}`}
-                                onClick={() => handleBrandChange(brand.brand)}
-                                >
                                     <input
                                         type="checkbox"
                                         checked={selectedBrands.includes(brand.brand)}
                                         onChange={() => handleBrandChange(brand.brand)}
                                     />
+                                    <label
+                                    key={index}
+                                    className={`filter-item ${selectedBrands.includes(brand.brand) ? 'selected' : ''}`}
+                                    onClick={() => handleBrandChange(brand.brand)}
+                                    >
                                     {brand.brand} ({brand.count})
-                                </div>
+                                    </label>
                             </div>
                         )) : <div className='filter-item'>Нет доступных брендов</div>}
                     </div>
@@ -134,7 +136,6 @@ export const Filter = ({ FilterIndex, sizes, brands, models, onFilter }: FilterP
                 <div className='filter-properties'>
                     <div className='popup-name'>Модель</div>
                     {
-
                         <div className="filter-items">
                             {sortedModels.length > 0 ? sortedModels.map((model, index) => (
                                 <div className='item-wrapper' key={index}>

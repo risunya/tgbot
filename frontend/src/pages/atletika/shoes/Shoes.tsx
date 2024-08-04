@@ -1,10 +1,14 @@
 import { Link } from "react-router-dom"
+import { GoBackButton } from "../../../components/gobackbutton/GoBackButton"
+import { ThemeButton } from "../../../components/themeButton/ThemeButton"
 
 export const Shoes = () => {
     return (
        <>
             <div className='intro-menu__header'>
+                <GoBackButton />
                 <div className="header-caption">Кроссовки</div>
+                <ThemeButton />
             </div>
             <div className='intro-menu'>
                 <Link to='/atletika/shoes/man'>

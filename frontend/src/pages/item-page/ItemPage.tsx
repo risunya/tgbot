@@ -1,15 +1,34 @@
 import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import './itempage.scss';
+import { Header } from '../../components/header/Header';
 
 export const ItemPage = () => {
     const { itemnumber } = useParams();
     const [itemData, setItemData] = useState<any>(null);
     const [loading, setLoading] = useState(true);
+    const [isActive, setIsActive] = useState(true);
 
+    const handleIsActive = () => {
+        isActive == false ? setIsActive(true) : setIsActive(false);
+    }
+    // const getCart = () => {
+    //     const cart = localStorage.getItem('cart');
+    //     return cart ? JSON.parse(cart) : [];
+    //   };
+    // const addToCart = (itemData) => {
+    //     const cart = getCart();
+    //     cart.push(itemData[4]);
+
+    // };
+    // const removeFromCart = (index: number) => {
+    //     const cart = getCart();
+    //     cart.splice(index, 1);
+    //     localStorage.setItem('cart', JSON.stringify(cart));
+    //   };
     useEffect(() => {
         const fetchItemData = async () => {
-            const scriptUrl = 'https://script.googleusercontent.com/macros/echo?user_content_key=9GuvFQTH6RQvr1B0-9A4rWHyTjbBEu7Zd0Jz9zv2j4pDmsCCz0XjGKgqIVwxElRmaoGjxjUTgbEecuXbUV1oiRY_EG2AwoBtm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnP8NHA8r3pmRSryoK9XShm2ojz6k2Z5-RK0K2Ak2Iemo40QgIqFlE1XWQ0DVdOGNTfEnDeE1CSpPiYHeFny96zSbpa9854WQ4A&lib=MXR79vg1ZLOpNmISJxcAQR38eJs5q9m5W';
+            const scriptUrl = 'https://script.googleusercontent.com/macros/echo?user_content_key=G3CeltWL35S5i7RV1X0rmc7QNng7LgPJcc8lL-KH3pPGgSVrEdHSJQOw6TLw5_YZU0-tmWlQOtUmqGor956JM8NOIIWu8WqSm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnGDTITHZ7kaIQxVYQNWenukIUJAPWe7F5K_uv3NEXJkPS0aOxSNXs-Ns-sk-fPmDrOyrVG5k3fWMezS64eO1CyQp9ciXVm0icg&lib=MXR79vg1ZLOpNmISJxcAQR38eJs5q9m5W';
 
             try {
                 const response = await fetch(scriptUrl);
@@ -17,9 +36,8 @@ export const ItemPage = () => {
                     throw new Error('Ошибка при получении данных: ' + response.status);
                 }
                 const jsonData = await response.json();
-                console.log('Полученные данные:', jsonData);
-                const item = itemnumber !== undefined ? jsonData.result.slice(1)[itemnumber] : null;
-                console.log('Найденный товар:', item);
+                const result = jsonData.result.filter((item: any) => item[4] == itemnumber);
+                const item = result[0];
                 setItemData(item);
             } catch (error) {
                 console.error('Ошибка:', error);
@@ -42,22 +60,17 @@ export const ItemPage = () => {
     }
 
     const sizes = [22, 22.5, 23, 23.5, 24, 24.5, 25, 25.5, 26, 26.5, 27, 27.5, 28, 28.5, 29, 29.5, 30, 30.5, 31];
-
+    const value = itemData.slice(6,25);
     const displayedSizes = sizes.map((size, index) => {
-        // Индекс в itemData соответствует текущему индексу + 6
-        const value = itemData[index + 6];
         // Если значение существует и не пустое, отображаем размер
-        return value && value !== '' ? <div className='round-size' key={size}>{size}</div> : null;
+        return value[index] && value[index] !== '' ? <div className='round-size' key={size}>{size}</div> : null;
     });
-
 
     return (
         <>
+            <Header />
             <div className='item-detail'>
                 <div className='item-container'>
-                    <Link  to='/atletika/shoes/man'>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-                    </Link>
                     <img className='item-image' src={itemData[5]} alt={`Изображение товара ${itemData[1]}`} />
                 </div>
                 <div className='item-info__page'>{itemData[2]} {itemData[3]} ({itemData[4]})</div>
@@ -76,6 +89,11 @@ export const ItemPage = () => {
                         <div className='new-price'>Цена: {itemData[26]}₽</div>
                         <div className='old-price'>{Math.round(itemData[26] * 1.1)}₽</div>
                     </div>
+                    <button className={'price-button' + (isActive ? '' : ' active')}
+                    onClick={() => {
+                        handleIsActive();
+                    }}
+                    >{isActive ? 'Добавить' : 'Удалить'}</button>
             </div>
         </>
     );

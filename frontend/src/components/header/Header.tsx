@@ -1,29 +1,44 @@
-import { Link, useLocation } from 'react-router-dom';
 import './header.scss'
 import { CartImg } from '../cartButton/CartImg';
 import { ThemeButton } from '../themeButton/ThemeButton';
-import { Ham } from './assets/Ham';
+import { useLocation } from 'react-router-dom';
+import { GoBackButton } from '../gobackbutton/GoBackButton';
+
 
 export const Header = () => {
     const location = useLocation();
-    const getHeaderName = () => {
-        switch (location.pathname) {
-            case '/atletika':
-                return 'Atletika';
-            case '/trunner':
-                return 'TRunner';
-            default:
-                return 'Каталог'; // Значение по умолчанию или другие возможные пути
+    let kind = '';
+    let sex = '';
+    const getItemInfo = () => {
+        
+        if (location.pathname.includes('shoes')) {
+          kind = 'Кроссовки';
+        } else if ((location.pathname.includes('spikes'))) {
+          kind = 'Шиповки';
+        } else  if ((location.pathname.includes('equipment'))){
+            kind = 'Экипировка';
+        } else {
+            kind = '';
         }
-    };
+        if (location.pathname.includes('/man')) {
+            sex = '(муж)';
+          } else if (location.pathname.includes('/woman')) {
+            sex = '(жен)';
+          } else if (location.pathname.includes('/tech')) {
+            sex = '(тех)';
+          } else if (location.pathname.includes('/middle')) {
+            sex = '(средние)';
+          } else if (location.pathname.includes('/sprint')) {
+            sex = '(спринт)';
+          } else if (location.pathname.includes('/accessories')) {
+            sex = '(аксессуары)';
+        }
+}
+getItemInfo();
     return (
         <div className='header'>
-            <Link to='/'>
-            <div className='helpers'>
-                <Ham />
-            </div>
-            </Link>
-            <div className='header-name'>{getHeaderName()}</div>
+            <GoBackButton />
+            <div className='header-name'>{kind} {sex}</div>
             <div className='helpers'>
                 <ThemeButton/>
                 <CartImg/>

@@ -1,6 +1,6 @@
 import './itemlist.scss';
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Loader } from '../../components/loader/Loader';
 import { Search } from '../../components/search/Search';
 import { Filter } from '../filter/Filter';
@@ -33,6 +33,7 @@ export const ItemList = ({ kind, sex }: MyButtonProps) => {
     const [uniqueBrands, setUniqueBrands] = useState<{ brand: string, count: number }[]>([]);
     const [uniqueModels, setUniqueModels] = useState<{ model: string, count: number }[]>([]);
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+    const location = useLocation();
 
     useEffect(() => {
             // Массив допустимых размеров
@@ -50,7 +51,7 @@ export const ItemList = ({ kind, sex }: MyButtonProps) => {
 
             // Пример использования в функции fetchData
             const fetchData = async () => {
-                const scriptUrl = 'https://script.googleusercontent.com/macros/echo?user_content_key=9GuvFQTH6RQvr1B0-9A4rWHyTjbBEu7Zd0Jz9zv2j4pDmsCCz0XjGKgqIVwxElRmaoGjxjUTgbEecuXbUV1oiRY_EG2AwoBtm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnP8NHA8r3pmRSryoK9XShm2ojz6k2Z5-RK0K2Ak2Iemo40QgIqFlE1XWQ0DVdOGNTfEnDeE1CSpPiYHeFny96zSbpa9854WQ4A&lib=MXR79vg1ZLOpNmISJxcAQR38eJs5q9m5W';
+                const scriptUrl = 'https://script.googleusercontent.com/macros/echo?user_content_key=G3CeltWL35S5i7RV1X0rmc7QNng7LgPJcc8lL-KH3pPGgSVrEdHSJQOw6TLw5_YZU0-tmWlQOtUmqGor956JM8NOIIWu8WqSm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnGDTITHZ7kaIQxVYQNWenukIUJAPWe7F5K_uv3NEXJkPS0aOxSNXs-Ns-sk-fPmDrOyrVG5k3fWMezS64eO1CyQp9ciXVm0icg&lib=MXR79vg1ZLOpNmISJxcAQR38eJs5q9m5W';
 
                 try {
                     const response = await fetch(scriptUrl);
@@ -214,7 +215,7 @@ export const ItemList = ({ kind, sex }: MyButtonProps) => {
                     <div className='item-list'>
                         {filteredSearchData.map((item, index) => {
                             return (
-                                <Link to={`/shoes/${index + 1}`} key={index} className='item'>
+                                <Link to={`${location.pathname + "/" + (item.otherField1)}`} key={index} className='item'>
                                     <div className='item-container'>
                                         {!imagesLoaded[index] && <div className='skeleton-image' />}
                                         {imagesLoaded[index] && (

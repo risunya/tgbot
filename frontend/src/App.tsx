@@ -15,9 +15,16 @@ import { WomanEquipment } from './pages/atletika/equipment/WomanEquipment'
 import { TechSpikes } from './pages/atletika/spikes/TechSpikes'
 import { SprintSpikes } from './pages/atletika/spikes/SprintSpikes'
 import { MiddleSpikes } from './pages/atletika/spikes/MiddleSpikes'
+import { useEffect } from 'react'
 
 
 export const App = () => {
+  useEffect(() => {
+    // Инициализация пустого массива и сохранение его в localStorage при первом рендере
+    if (!localStorage.getItem('cart')) {
+      localStorage.setItem('cart', JSON.stringify([]));
+    }
+  }, []);
   return (
             <>
               <Routes>
@@ -26,17 +33,24 @@ export const App = () => {
                 <Route path='/atletika/shoes' element={<Shoes/>}/>
                 <Route path='/atletika/shoes/man' element={<ManShoes/>}/>
                 <Route path='/atletika/shoes/woman' element={<WomanShoes/>}/>
+                <Route path='/atletika/shoes/man/:itemnumber' element={<ItemPage/>}/>
+                <Route path='/atletika/shoes/woman/:itemnumber' element={<ItemPage/>}/>
                 <Route path='/atletika/spikes' element={<Spikes/>}/>
                 <Route path='/atletika/spikes/middle' element={<MiddleSpikes/>}/>
                 <Route path='/atletika/spikes/sprint' element={<SprintSpikes/>}/>
                 <Route path='/atletika/spikes/tech' element={<TechSpikes/>}/>
+                <Route path='/atletika/spikes/tech/:itemnumber' element={<ItemPage/>}/>
+                <Route path='/atletika/spikes/middle/:itemnumber' element={<ItemPage/>}/>
+                <Route path='/atletika/spikes/sprint/:itemnumber' element={<ItemPage/>}/>
                 <Route path='/atletika/equipment' element={<Equipment/>}/>
                 <Route path='/atletika/equipment/accessories' element={<Accessories/>}/>
                 <Route path='/atletika/equipment/man' element={<ManEquipment/>}/>
                 <Route path='/atletika/equipment/woman' element={<WomanEquipment/>}/>
+                <Route path='/atletika/equipment/accessories/:itemnumber' element={<ItemPage/>}/>
+                <Route path='/atletika/equipment/man/:itemnumber' element={<ItemPage/>}/>
+                <Route path='/atletika/equipment/woman/:itemnumber' element={<ItemPage/>}/>
                 <Route path='/trunner' element={<TRunner/>}/>
                 <Route path='/cart' element={<Cart/>}/>
-                <Route path='/shoes/:itemnumber' element={<ItemPage/>}/>
               </Routes>
             </>
   )

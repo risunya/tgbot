@@ -8,7 +8,7 @@ interface MyButtonProps {
     kind: string;
     /** Whether the button can be interacted with */
     sex: string;
-  }
+}
 
 export const Home = ({ kind, sex }: MyButtonProps) => {
    

@@ -121,6 +121,8 @@
         border-top: 1px solid var(--light-background-color);
         transition: .3s;
         z-index: 5;
+        display: flex;
+        justify-content: space-between;
         .price {
             display: flex;
             justify-content: flex-start;
@@ -138,6 +140,20 @@
                 color: grey;
                 text-decoration: line-through;
             }
+        }
+        .price-button {
+            background-color: var(--text-color);
+            color: var(--background-color);
+            width: 12rem;
+            border-radius: 1rem;
+            margin: 1rem 2rem;
+            padding: 1rem 2.5rem;
+            transition: .3s;
+        }
+        .active {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            border: 1px solid var(--text-color);
         }
     }
 

@@ -12,20 +12,29 @@ export const ItemPage = () => {
     const handleIsActive = () => {
         isActive == false ? setIsActive(true) : setIsActive(false);
     }
-    // const getCart = () => {
-    //     const cart = localStorage.getItem('cart');
-    //     return cart ? JSON.parse(cart) : [];
-    //   };
-    // const addToCart = (itemData) => {
-    //     const cart = getCart();
-    //     cart.push(itemData[4]);
-
-    // };
-    // const removeFromCart = (index: number) => {
-    //     const cart = getCart();
-    //     cart.splice(index, 1);
-    //     localStorage.setItem('cart', JSON.stringify(cart));
-    //   };
+    const addToCart = (itemData : any) => {
+        // Получаем текущий массив cart из localStorage
+        const cart = JSON.parse(localStorage.getItem('cart') || '{}');
+    
+        // Определяем индекс как длину текущего массива cart
+        const index = cart.length;
+    
+        // Добавляем элемент в массив под определенным индексом
+        cart[index] = itemData;
+    
+        // Сохраняем обновленный массив обратно в localStorage
+        localStorage.setItem('cart', JSON.stringify(cart));
+    };
+    const removeFromCart = () => {
+        // Получаем текущий массив cart из localStorage
+        const cart = JSON.parse(localStorage.getItem('cart') || '{}');
+    
+        // Удаляем элемент под указанным индексом, если он существует
+        cart.pop();
+    
+        // Сохраняем обновленный массив обратно в localStorage
+        localStorage.setItem('cart', JSON.stringify(cart));
+    };
     useEffect(() => {
         const fetchItemData = async () => {
             const scriptUrl = 'https://script.googleusercontent.com/macros/echo?user_content_key=G3CeltWL35S5i7RV1X0rmc7QNng7LgPJcc8lL-KH3pPGgSVrEdHSJQOw6TLw5_YZU0-tmWlQOtUmqGor956JM8NOIIWu8WqSm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnGDTITHZ7kaIQxVYQNWenukIUJAPWe7F5K_uv3NEXJkPS0aOxSNXs-Ns-sk-fPmDrOyrVG5k3fWMezS64eO1CyQp9ciXVm0icg&lib=MXR79vg1ZLOpNmISJxcAQR38eJs5q9m5W';
@@ -91,7 +100,9 @@ export const ItemPage = () => {
                     </div>
                     <button className={'price-button' + (isActive ? '' : ' active')}
                     onClick={() => {
+                       
                         handleIsActive();
+                        { isActive ? addToCart(itemData) : removeFromCart()}
                     }}
                     >{isActive ? 'Добавить' : 'Удалить'}</button>
             </div>

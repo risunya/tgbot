@@ -4,6 +4,8 @@
     align-items: center;
     border: none;
     border-radius: 9999px;
+    z-index: 1000;
+    transition: .3s;
 }
 
 .helper-button {

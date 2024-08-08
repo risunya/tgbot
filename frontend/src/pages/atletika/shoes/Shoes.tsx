@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom"
 import { GoBackButton } from "../../../components/gobackbutton/GoBackButton"
 import { ThemeButton } from "../../../components/themeButton/ThemeButton"
+import { CartImg } from "../../../components/cartButton/CartImg"
 
 export const Shoes = () => {
     return (
@@ -8,7 +9,10 @@ export const Shoes = () => {
             <div className='intro-menu__header'>
                 <GoBackButton />
                 <div className="header-caption">Кроссовки</div>
-                <ThemeButton />
+                <div className='header-buttons'>
+                    <ThemeButton />
+                    <CartImg />
+                </div>
             </div>
             <div className='intro-menu'>
                 <Link to='/atletika/shoes/man'>

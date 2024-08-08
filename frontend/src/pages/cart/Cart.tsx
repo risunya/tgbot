@@ -1,9 +1,8 @@
 import { Link } from 'react-router-dom';
-import { Header } from '../../components/header/Header';
 import './cart.scss';
 import { useState, useEffect } from 'react';
 
-export const Cart = () => {
+export const Cart = ({isCartActive} : any) => {
   const [cart, setCart] = useState(() => {
   const savedCart = localStorage.getItem('cart');
   return savedCart ? JSON.parse(savedCart) : [];
@@ -44,8 +43,7 @@ export const Cart = () => {
   );
   
   return (
-    <>
-      <Header/>
+    <div className={`cart-wrapper ${isCartActive ? "active" : ""}`}>
       {cart.length === 0 ? 
         <div className="title">
           <div className='title_header'>Тут пусто 🙀</div>
@@ -57,10 +55,10 @@ export const Cart = () => {
         <div className="full-cart">
           {listItems}
           <button className='write-cart-button'>
-            <a href="https://t.me/Sergey_AIeshkin">Написать менеджеру</a>
+            <a href="https://t.me/Alyoshkin_Sergey">Написать менеджеру</a>
           </button>
         </div> 
       }
-    </>
+    </div>
   );
 };

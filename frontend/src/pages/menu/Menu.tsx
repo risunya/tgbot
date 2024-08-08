@@ -1,12 +1,16 @@
 import { Link } from 'react-router-dom'
 import './menu.scss'
 import { ThemeButton } from '../../components/themeButton/ThemeButton'
+import { CartImg } from '../../components/cartButton/CartImg'
 export const Menu = () => {
     return (
         <>
             <div className='intro-menu__header'>
                 <div className="header-caption">Каталог</div>
-                <ThemeButton />
+                <div className='header-buttons'>
+                    <ThemeButton />
+                    <CartImg />
+                </div>
             </div>
             <div className='intro-menu'>
                 <Link to='/atletika'>
